@@ -1,11 +1,35 @@
 name : Github Action demo
 on : [push]
 jobs:
-    Explore:
-        runs-on: ubuntu-latest
-        steps:
-        - uses: actions/checkout@v4
-        - uses: actions/setup-python@v5
-          with:
-            python-version: '3.13' 
-        - run: python a.py
+  run-python:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      # Install dependencies (if any)
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # Add any additional dependencies here, if required
+          # pip install -r requirements.txt
+
+      # Run Python script
+      - name: Run Python Script
+        run: |
+          python a.py
+
+      # Upload generated text file as an artifact
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: generated-file
+          path: test.txt
